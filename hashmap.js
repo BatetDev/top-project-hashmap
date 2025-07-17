@@ -5,6 +5,18 @@ class HashMap {
     this.loadFactor = loadFactor;
     this.initialCapacity = initialCapacity;
   }
+
+  hash(key) {
+    const primeNumber = 31;
+    let hashCode = 0;
+
+    for (let i = 0; i < key.length; i++) {
+      hashCode =
+        (primeNumber * hashCode + key.charCodeAt(i)) % this.buckets.length;
+    }
+
+    return hashCode;
+  }
 }
 
 /* throw an error if we try to access an out-of-bounds index:
