@@ -2,8 +2,10 @@
 
 class HashMap {
   constructor(loadFactor = 0.75, initialCapacity = 16) {
+    this.buckets = new Array(initialCapacity).fill(null).map(() => []);
     this.loadFactor = loadFactor;
-    this.initialCapacity = initialCapacity;
+    this.capacity = initialCapacity;
+    this.size = 0;
   }
 
   hash(key) {
