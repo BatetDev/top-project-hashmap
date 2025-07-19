@@ -2,6 +2,7 @@
 
 class HashMap {
   constructor(loadFactor = 0.75, initialCapacity = 16) {
+    // Initialize buckets: each is a unique array to avoid shared reference issues
     this.buckets = new Array(initialCapacity).fill(null).map(() => []);
     this.loadFactor = loadFactor;
     this.capacity = initialCapacity;
