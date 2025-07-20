@@ -20,6 +20,12 @@ class HashMap {
 
     return hashCode;
   }
+
+  // Hash the key to find the bucket index
+  // Go to that bucket
+  // Track the number of keys
+  // Check if resize is needed
+  set(key, value) {}
 }
 
 /* throw an error if we try to access an out-of-bounds index:
