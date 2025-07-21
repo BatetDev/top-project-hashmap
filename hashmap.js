@@ -25,6 +25,7 @@ class HashMap {
   // Go to that bucket
   // Track the number of keys
   // Check if resize is needed
+
   set(key, value) {}
 }
 
