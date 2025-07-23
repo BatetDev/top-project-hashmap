@@ -1,0 +1,21 @@
+{
+  "name": "top-project-hashmap",
+  "version": "1.0.0",
+  "description": "// Solution for The Odin Project, Project HashMap",
+  "main": "hashmap.js",
+  "scripts": {
+    "start": "node script.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BatetDev/top-project-hashmap.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/BatetDev/top-project-hashmap/issues"
+  },
+  "homepage": "https://github.com/BatetDev/top-project-hashmap#readme"
+}

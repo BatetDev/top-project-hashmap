@@ -1,6 +1,6 @@
 // hashmap.js
 
-class HashMap {
+export class HashMap {
   constructor(loadFactor = 0.75, initialCapacity = 16) {
     // Initialize buckets: each is a unique array to avoid shared reference issues
     this.buckets = new Array(initialCapacity).fill(null).map(() => []);
@@ -26,7 +26,10 @@ class HashMap {
   // Track the number of keys
   // Check if resize is needed
 
-  set(key, value) {}
+  set(key, value) {
+    let index = hash(key);
+    console.log(this.buckets[index]);
+  }
 }
 
 /* throw an error if we try to access an out-of-bounds index:
