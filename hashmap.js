@@ -21,14 +21,35 @@ export class HashMap {
     return hashCode;
   }
 
-  // Hash the key to find the bucket index
-  // Go to that bucket
-  // Track the number of keys
-  // Check if resize is needed
+  /* 
+  set(key, value) takes two arguments: the first is a key, and the second is a value that is assigned to this key. If a key already exists, then the old value is overwritten, and we can say that we update the key’s value (e.g. Carlos is our key but it is called twice: once with value I am the old value., and once with value I am the new value.. Following this logic, Carlos should contain only the latter value).
+  */
 
   set(key, value) {
-    let index = hash(key);
-    console.log(this.buckets[index]);
+    const index = this.hash(key);
+
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      if (this.buckets[index][i][0] === key) {
+        this.buckets[index][i][1] = value;
+        return;
+      }
+    }
+
+    this.buckets[index].push([key, value]);
+    this.size++;
+
+    if (this.size / this.capacity >= this.loadFactor) {
+      this.capacity *= 2;
+      console.log("Capacity resized to:", this.capacity);
+
+      const oldBuckets = this.buckets;
+
+      this.buckets = new Array(this.capacity).fill(null).map(() => []);
+    }
   }
 }
 
