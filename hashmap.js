@@ -54,4 +54,17 @@ export class HashMap {
     this.buckets[this.hash(key)].push([key, value]);
     this.size++;
   }
+
+  _resize() {
+    const oldBuckets = this.buckets;
+    this.capacity *= 2;
+    this.buckets = new Array(this.capacity).fill(null).map(() => []);
+    this.size = 0;
+
+    for (const bucket of oldBuckets) {
+      for (const [key, value] of bucket) {
+        this.set(key, value);
+      }
+    }
+  }
 }
