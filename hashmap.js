@@ -52,15 +52,24 @@ export class HashMap {
 
     // Add new key / value pair
     this.buckets[this.hash(key)].push([key, value]);
+
     this.size++;
   }
 
   _resize() {
+    // Preserve the current bucket array before resizing
     const oldBuckets = this.buckets;
+
+    // Double the capacity to reduce load factor and minimize future collisions
     this.capacity *= 2;
+
+    // Reinitialize buckets with new capacity
     this.buckets = new Array(this.capacity).fill(null).map(() => []);
+
+    // Reset size counter before reinserting all entries
     this.size = 0;
 
+    // Reinsert all key-value pairs from the old buckets into resized structure
     for (const bucket of oldBuckets) {
       for (const [key, value] of bucket) {
         this.set(key, value);
