@@ -105,3 +105,9 @@ if (load >= 0.75) {
 } else {
   console.log("🟢 Load under threshold — no resize needed yet");
 }
+
+console.log(map.get("conan"));
+console.log(map.get("Ragnarssonovich"));
+console.log(map.has("conan"));
+console.log(map.has("Ragnarssonovich"));
+console.log(map.has("belit"));
