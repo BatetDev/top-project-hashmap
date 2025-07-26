@@ -22,18 +22,24 @@ export class HashMap {
   }
 
   /* 
-  set(key, value) takes two arguments: the first is a key, and the second is a value that is assigned to this key. If a key already exists, then the old value is overwritten, and we can say that we update the key’s value (e.g. Carlos is our key but it is called twice: once with value I am the old value., and once with value I am the new value.. Following this logic, Carlos should contain only the latter value).
+  set(key, value) takes two arguments: the first is a key, and the second is a value that is assigned to this key. If a key already exists, then the old value is overwritten, and we can say that we update the key’s value.
   */
 
   set(key, value) {
+    // Calculate which bucket the key belongs in
     const index = this.hash(key);
 
+    // Check if that index is valid
     if (index < 0 || index >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
 
+    // Look inside that bucket for the key
+    // For each entry in the bucket:
     for (let i = 0; i < this.buckets[index].length; i++) {
+      // If the entry's key matches the input key:
       if (this.buckets[index][i][0] === key) {
+        // Update the entry's value to the new value
         this.buckets[index][i][1] = value;
         return;
       }
@@ -52,9 +58,3 @@ export class HashMap {
     }
   }
 }
-
-/* throw an error if we try to access an out-of-bounds index:
-if (index < 0 || index >= buckets.length) {
-  throw new Error("Trying to access index out of bounds");
-}
-*/
