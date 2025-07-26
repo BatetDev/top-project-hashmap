@@ -45,16 +45,13 @@ export class HashMap {
       }
     }
 
-    this.buckets[index].push([key, value]);
-    this.size++;
-
+    // If new key, check if we need to grow buckets
     if (this.size / this.capacity >= this.loadFactor) {
-      this.capacity *= 2;
-      console.log("Capacity resized to:", this.capacity);
-
-      const oldBuckets = this.buckets;
-
-      this.buckets = new Array(this.capacity).fill(null).map(() => []);
+      this._resize();
     }
+
+    // Add new key / value pair
+    this.buckets[this.hash(key)].push([key, value]);
+    this.size++;
   }
 }
