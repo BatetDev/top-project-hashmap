@@ -110,4 +110,9 @@ console.log(map.get("conan"));
 console.log(map.get("Ragnarssonovich"));
 console.log(map.has("conan"));
 console.log(map.has("Ragnarssonovich"));
-console.log(map.has("belit"));
+console.log(map.size);
+console.log(map.has("belit")); // → true
+console.log(map.remove("belit")); // → true
+console.log(map.has("belit")); // → false
+console.log(map.get("belit")); // → null
+console.log(map.size); // → decreased by 1

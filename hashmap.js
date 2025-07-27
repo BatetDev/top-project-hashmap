@@ -122,4 +122,27 @@ export class HashMap {
     }
     return false;
   }
+
+  // takes a key as an argument. If the given key is in the hash map, it should remove the entry with that key and return true. If the key isn’t in the hash map, it should return false.
+  remove(key) {
+    // Calculate which bucket the key belongs in
+    const index = this.hash(key);
+
+    // Check if that index is valid
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    const bucket = this.buckets[index];
+
+    for (let i = 0; i < bucket.length; i++) {
+      // If the entry's key matches the input key:
+      if (bucket[i][0] === key) {
+        bucket.splice(i, 1);
+        this.size--;
+        return true;
+      }
+    }
+    return false;
+  }
 }
