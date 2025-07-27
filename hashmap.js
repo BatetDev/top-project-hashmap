@@ -171,4 +171,15 @@ export class HashMap {
     }
     return keys;
   }
+
+  // Returns an array containing all the values.
+  values() {
+    const values = [];
+    for (const bucket of this.buckets) {
+      for (const [key, value] of bucket) {
+        values.push(value);
+      }
+    }
+    return values;
+  }
 }
