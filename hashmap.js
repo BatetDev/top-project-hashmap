@@ -160,4 +160,15 @@ export class HashMap {
     // Reset size to 0 - no keys left
     this.size = 0;
   }
+
+  // Returns an array containing all the keys inside the hash map.
+  keys() {
+    const keys = [];
+    for (const bucket of this.buckets) {
+      for (const [key, value] of bucket) {
+        keys.push(key);
+      }
+    }
+    return keys;
+  }
 }
