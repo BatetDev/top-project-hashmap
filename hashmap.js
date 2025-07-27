@@ -182,4 +182,15 @@ export class HashMap {
     }
     return values;
   }
+
+  // Returns an array that contains each key, value pair.
+  entries() {
+    const entries = [];
+    for (const bucket of this.buckets) {
+      for (const [key, value] of bucket) {
+        entries.push([key, value]);
+      }
+    }
+    return entries;
+  }
 }
