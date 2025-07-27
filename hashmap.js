@@ -145,4 +145,9 @@ export class HashMap {
     }
     return false;
   }
+
+  // Returns the number of stored keys in the hash map.
+  length() {
+    return this.size;
+  }
 }
