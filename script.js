@@ -116,3 +116,5 @@ console.log(map.remove("belit"));
 console.log(map.has("belit"));
 console.log(map.get("belit"));
 console.log(map.length());
+map.clear();
+console.log(map.length());

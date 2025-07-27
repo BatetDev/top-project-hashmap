@@ -150,4 +150,14 @@ export class HashMap {
   length() {
     return this.size;
   }
+
+  // Removes all entries in the hash map
+  clear() {
+    // Reset buckets to fresh array of original size
+    this.buckets = new Array(this.initialCapacity).fill(null).map(() => []);
+    // Reset capacity to original value
+    this.capacity = this.initialCapacity;
+    // Reset size to 0 - no keys left
+    this.size = 0;
+  }
 }
