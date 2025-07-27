@@ -1,4 +1,4 @@
-// TODO REDO THE TEST CASES
+// TODO: REDO THE TEST CASES
 
 import { HashMap } from "./hashmap.js";
 
