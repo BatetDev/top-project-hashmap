@@ -1,4 +1,5 @@
 // script.js
+
 // Testing the Hash Map
 
 import { HashMap } from "./hashmap.js";
@@ -66,4 +67,3 @@ map.clear();
 console.log("size after clear():", map.size); // → 0
 console.log("buckets length after clear():", map.buckets.length); // → 16 (reset to initial)
 console.log("capacity after clear():", map.capacity); // → 16
-console.log(map);

@@ -32,9 +32,7 @@ export class HashMap {
     const index = this.hash(key);
 
     // Check if that index is valid
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bounds");
-    }
+    this._checkBounds(index);
 
     // Look inside that bucket for the key
     // For each entry in the bucket:
@@ -79,26 +77,26 @@ export class HashMap {
     }
   }
 
+  // Throws error if index is out of bounds
+  _checkBounds(index) {
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+  }
+
   // Takes one argument as a key and returns the value that is assigned to this key. If a key is not found, return null
   get(key) {
     // Calculate which bucket the key belongs in
     const index = this.hash(key);
 
     // Check if that index is valid
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bounds");
-    }
+    this._checkBounds(index);
 
     const bucket = this.buckets[index];
 
     // Look inside that bucket for the key
-    // For each entry in the bucket:
-    for (let i = 0; i < bucket.length; i++) {
-      // If the entry's key matches the input key:
-      if (bucket[i][0] === key) {
-        // Returns entry's value
-        return bucket[i][1];
-      }
+    for (const [k, v] of bucket) {
+      if (k === key) return v;
     }
     return null;
   }
@@ -109,17 +107,12 @@ export class HashMap {
     const index = this.hash(key);
 
     // Check if that index is valid
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bounds");
-    }
+    this._checkBounds(index);
 
     const bucket = this.buckets[index];
 
-    for (let i = 0; i < bucket.length; i++) {
-      // If the entry's key matches the input key:
-      if (bucket[i][0] === key) {
-        return true;
-      }
+    for (const [k, _] of bucket) {
+      if (k === key) return true;
     }
     return false;
   }
@@ -130,9 +123,7 @@ export class HashMap {
     const index = this.hash(key);
 
     // Check if that index is valid
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bounds");
-    }
+    this._checkBounds(index);
 
     const bucket = this.buckets[index];
 
