@@ -5,6 +5,7 @@ export class HashMap {
     // Initialize buckets: each is a unique array to avoid shared reference issues
     this.buckets = new Array(initialCapacity).fill(null).map(() => []);
     this.loadFactor = loadFactor;
+    this.initialCapacity = initialCapacity;
     this.capacity = initialCapacity;
     this.size = 0;
   }

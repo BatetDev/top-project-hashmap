@@ -1,128 +1,69 @@
-// TODO: REDO THE TEST CASES
+// script.js
+// Testing the Hash Map
 
 import { HashMap } from "./hashmap.js";
 
-const map = new HashMap();
+const map = new HashMap(); // capacity 0/16 | loadFactor: 0.75
 
-// ——————————————————————————————
-// Initial State
-// ——————————————————————————————
-console.log("🔹 STARTING TEST: Hyborian Hash Map");
-console.log("Initial capacity:", map.capacity);
-console.log("Initial size:", map.size);
-console.log("Buckets length:", map.buckets.length);
-console.log("");
+// Populate hash map using the set(key, value) method
+map.set("apple", "red");
+map.set("banana", "yellow");
+map.set("carrot", "orange");
+map.set("dog", "brown");
+map.set("elephant", "gray");
+map.set("frog", "green");
+map.set("grape", "purple");
+map.set("hat", "black");
+map.set("ice cream", "white");
+map.set("jacket", "blue");
+map.set("kite", "pink");
+map.set("lion", "golden");
+// capacity: 12/16
 
-// ——————————————————————————————
-// Test 1: Add a new key
-// ——————————————————————————————
-console.log("1️⃣ SET: 'conan' → 'cimmerian'");
-map.set("conan", "cimmerian");
-console.log(
-  " → bucket[",
-  map.hash("conan"),
-  "] =",
-  map.buckets[map.hash("conan")]
-);
-console.log(" → size =", map.size);
-console.log("");
+// Overwrite a few nodes using set(key, value)
+map.set("apple", "green");
+map.set("banana", "brown");
+map.set("lion", "white");
+// capacity: 12/16 (no changes in size)
 
-// ——————————————————————————————
-// Test 2: Update existing key
-// ——————————————————————————————
-console.log("2️⃣ UPDATE: 'conan' → 'king-of-aquilonia'");
-map.set("conan", "king-of-aquilonia");
-console.log(
-  " → bucket[",
-  map.hash("conan"),
-  "] =",
-  map.buckets[map.hash("conan")]
-);
-console.log(" → size =", map.size); // Should still be 1
-console.log("");
+// Add one more key to trigger resize
+map.set("moon", "silver");
+// capacity: 13/32 (resize triggered)
 
-// ——————————————————————————————
-// Test 3: Add a second key
-// ——————————————————————————————
-console.log("3️⃣ SET: 'belit' → 'queen-of-the-black-coast'");
-map.set("belit", "queen-of-the-black-coast");
-console.log(
-  " → bucket[",
-  map.hash("belit"),
-  "] =",
-  map.buckets[map.hash("belit")]
-);
-console.log(" → size =", map.size);
-console.log("");
+// Overwrite a few nodes after resize
+map.set("moon", "gold");
+map.set("apple", "crimson");
+map.set("dog", "black");
+// capacity: 13/32 (no changes in size)
 
-// ——————————————————————————————
-// Test 4: Add more Hyborian lore
-// ——————————————————————————————
-console.log("4️⃣ ADDING HYBORIAN EMPIRES, TRIBES, AND ARTIFACTS...");
-const hyborianEntries = [
-  ["kull", "king-of-valusia"],
-  ["thulsa-doom", "leader-of-the-serpent-men"],
-  ["xenobia", "queen-of-stygia"],
-  ["jhebbal-sag", "god-of-the-jungle"],
-  ["sacred-sword-of-akivasha", "legendary-weapon"],
-  ["dark-hold", "fortress-of-evil"],
-  ["black-river", "domain-of-conan"],
-  ["pictish-wilds", "land-of-the-picts"],
-  ["serpent-ring", "artifact-of-dhalla"],
-  ["tower-of-the-elephant", "lair-of-thieves"],
-  ["kezankian-desert", "wasteland-of-the-east"],
-];
+// Test the other methods
 
-for (const [key, value] of hyborianEntries) {
-  const index = map.hash(key);
-  console.log(`   → SET: '${key}' → '${value}' → bucket[${index}]`);
-  map.set(key, value);
-}
+// get(key)
+console.log('get("apple"):', map.get("apple")); // → 'crimson'
+console.log('get("moon"):', map.get("moon")); // → 'gold'
+console.log('get("missing"):', map.get("missing")); // → null
 
-console.log("");
+// Test has(key)
+console.log('has("banana"):', map.has("banana")); // → true
+console.log('has("missing"):', map.has("missing")); // → false
 
-// ——————————————————————————————
-// Final State: Show non-empty buckets
-// ——————————————————————————————
-console.log("🏺 FINAL HYBORIAN REALMS (non-empty buckets):");
-map.buckets.forEach((bucket, i) => {
-  if (bucket.length > 0) {
-    console.log(`   🪣 bucket[${i}] =`, bucket);
-  }
-});
-console.log("");
+// Test remove(key)
+console.log("size before remove:", map.size); // → 13
+console.log('remove("frog"):', map.remove("frog")); // → true
+console.log('remove("frog"):', map.remove("frog")); // → false (already removed)
+console.log("size after remove:", map.size); // → 12
 
-// ——————————————————————————————
-// Load Factor Check
-// ——————————————————————————————
-console.log("📊 FINAL METRICS");
-console.log("Total entries (size):", map.size);
-console.log("Current capacity:", map.capacity);
-console.log("Buckets array length:", map.buckets.length);
-const load = map.size / map.capacity;
-console.log(`Load factor: ${map.size}/${map.capacity} = ${load.toFixed(2)}`);
+// Test length()
+console.log("length():", map.length()); // → 12
 
-if (load >= 0.75) {
-  console.log("🔥 Load >= 0.75 — resize should have triggered!");
-} else {
-  console.log("🟢 Load under threshold — no resize needed yet");
-}
+// Test keys(), values(), entries()
+console.log("keys():", map.keys());
+console.log("values():", map.values());
+console.log("entries():", map.entries());
 
-console.log(map.get("conan"));
-console.log(map.get("Ragnarssonovich"));
-console.log(map.has("conan"));
-console.log(map.has("Ragnarssonovich"));
-console.log(map.length());
-console.log(map.has("belit"));
-console.log(map.remove("belit"));
-console.log(map.has("belit"));
-console.log(map.get("belit"));
-console.log(map.keys());
-console.log(map.values());
-console.log(map.entries());
-console.log(map.length());
+// Test clear()
 map.clear();
-console.log(map.length());
-console.log(map.keys());
-console.log(map.values());
-console.log(map.entries());
+console.log("size after clear():", map.size); // → 0
+console.log("buckets length after clear():", map.buckets.length); // → 16 (reset to initial)
+console.log("capacity after clear():", map.capacity); // → 16
+console.log(map);
