@@ -2,7 +2,8 @@
 
 export class HashMap {
   constructor(loadFactor = 0.75, initialCapacity = 16) {
-    // Initialize buckets: each is a unique array to avoid shared reference issues
+    // Create an array of buckets, each an independent empty array
+    // Prevents shared reference issues when pushing to buckets
     this.buckets = new Array(initialCapacity).fill(null).map(() => []);
     this.loadFactor = loadFactor;
     this.initialCapacity = initialCapacity;
@@ -10,7 +11,8 @@ export class HashMap {
     this.size = 0;
   }
 
-  // Takes a key and produces a hash code with it
+  // Hashes a string key into a bucket index using a prime-based rolling hash
+  // Applies modulo at each step to prevent overflow and ensure valid index
   hash(key) {
     const primeNumber = 31;
     let hashCode = 0;
@@ -23,53 +25,45 @@ export class HashMap {
     return hashCode;
   }
 
-  /* 
-  set(key, value) takes two arguments: the first is a key, and the second is a value that is assigned to this key. If a key already exists, then the old value is overwritten, and we can say that we update the key’s value.
-  */
-
+  // Sets a key-value pair. Updates if key exists, inserts if new.
+  // Triggers resize if load factor is exceeded after insertion.
   set(key, value) {
-    // Calculate which bucket the key belongs in
     const index = this.hash(key);
-
-    // Check if that index is valid
     this._checkBounds(index);
 
-    // Look inside that bucket for the key
-    // For each entry in the bucket:
-    for (let i = 0; i < this.buckets[index].length; i++) {
-      // If the entry's key matches the input key:
-      if (this.buckets[index][i][0] === key) {
-        // Update the entry's value to the new value
-        this.buckets[index][i][1] = value;
+    // Check for existing key
+    const bucket = this.buckets[index];
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i][0] === key) {
+        bucket[i][1] = value;
         return;
       }
     }
 
-    // If new key, check if we need to grow buckets
+    // If new key, check for resize
     if (this.size / this.capacity >= this.loadFactor) {
       this._resize();
     }
 
-    // Add new key / value pair
+    // Use fresh hash and bucket access after possible resize
     this.buckets[this.hash(key)].push([key, value]);
-
     this.size++;
   }
 
   _resize() {
-    // Preserve the current bucket array before resizing
+    // Save reference to existing buckets to preserve all key-value pairs during resize
     const oldBuckets = this.buckets;
 
     // Double the capacity to reduce load factor and minimize future collisions
     this.capacity *= 2;
 
-    // Reinitialize buckets with new capacity
+    // Create new bucket array with doubled capacity, each bucket initialized as empty array
     this.buckets = new Array(this.capacity).fill(null).map(() => []);
 
-    // Reset size counter before reinserting all entries
+    // Reset size to 0 so reinsertion via set() correctly rebuilds the count
     this.size = 0;
 
-    // Reinsert all key-value pairs from the old buckets into resized structure
+    // Reinsert all entries using set() to ensure correct bucket placement with new hash
     for (const bucket of oldBuckets) {
       for (const [key, value] of bucket) {
         this.set(key, value);
@@ -77,19 +71,16 @@ export class HashMap {
     }
   }
 
-  // Throws error if index is out of bounds
+  // Ensures index is valid for current bucket array; throws if out of bounds
   _checkBounds(index) {
     if (index < 0 || index >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
   }
 
-  // Takes one argument as a key and returns the value that is assigned to this key. If a key is not found, return null
+  // Returns the value for the given key, or null if not found
   get(key) {
-    // Calculate which bucket the key belongs in
     const index = this.hash(key);
-
-    // Check if that index is valid
     this._checkBounds(index);
 
     const bucket = this.buckets[index];
@@ -101,12 +92,9 @@ export class HashMap {
     return null;
   }
 
-  // Takes a key as an argument and returns true or false based on whether or not the key is in the hash map.
+  // Returns true if the key exists, false otherwise
   has(key) {
-    // Calculate which bucket the key belongs in
     const index = this.hash(key);
-
-    // Check if that index is valid
     this._checkBounds(index);
 
     const bucket = this.buckets[index];
@@ -117,18 +105,14 @@ export class HashMap {
     return false;
   }
 
-  // takes a key as an argument. If the given key is in the hash map, it should remove the entry with that key and return true. If the key isn’t in the hash map, it should return false.
+  // Removes the key if found and returns true; otherwise returns false
   remove(key) {
-    // Calculate which bucket the key belongs in
     const index = this.hash(key);
-
-    // Check if that index is valid
     this._checkBounds(index);
 
     const bucket = this.buckets[index];
 
     for (let i = 0; i < bucket.length; i++) {
-      // If the entry's key matches the input key:
       if (bucket[i][0] === key) {
         bucket.splice(i, 1);
         this.size--;
@@ -138,44 +122,41 @@ export class HashMap {
     return false;
   }
 
-  // Returns the number of stored keys in the hash map.
+  // Returns the number of stored keys
   length() {
     return this.size;
   }
 
-  // Removes all entries in the hash map
+  // Resets the hash map to initial state: empty buckets, original capacity, size 0
   clear() {
-    // Reset buckets to fresh array of original size
     this.buckets = new Array(this.initialCapacity).fill(null).map(() => []);
-    // Reset capacity to original value
     this.capacity = this.initialCapacity;
-    // Reset size to 0 - no keys left
     this.size = 0;
   }
 
-  // Returns an array containing all the keys inside the hash map.
+  // Returns an array of all keys
   keys() {
     const keys = [];
     for (const bucket of this.buckets) {
-      for (const [key, value] of bucket) {
+      for (const [key, _] of bucket) {
         keys.push(key);
       }
     }
     return keys;
   }
 
-  // Returns an array containing all the values.
+  // Returns an array of all values
   values() {
     const values = [];
     for (const bucket of this.buckets) {
-      for (const [key, value] of bucket) {
+      for (const [_, value] of bucket) {
         values.push(value);
       }
     }
     return values;
   }
 
-  // Returns an array that contains each key, value pair.
+  // Returns an array of all key-value pairs
   entries() {
     const entries = [];
     for (const bucket of this.buckets) {
